@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.lzh.ssm.dao.MovieMapper">
+  	<select id="findByPage" parameterType="java.lang.String" resultType="Movie">
+  	<bind name="start" value="(arg0.nowpage-1)*arg0.page_contain"/>
+  		select *
+  		from Movies
+  		<where>
+  			<if test="'country'==arg2">
+  				country like #{arg1}
+  			</if>
+  			<if test="'genre'==arg2">
+  				genre like #{arg1}
+  			</if>
+  			<if test="'name'==arg2">
+  				name like #{arg1}
+  			</if>
+  			<if test="'ALL'==arg2">
+  				name like '%'
+  			</if>
+  			<if test="'author'==arg2">
+  				author like #{arg1}
+  			</if>
+  		</where>
+  		limit #{start},#{arg0.page_contain}
+  	</select>
+  	<select id="getById" parameterType="int" resultType="Movie">
+  		select *
+  		from Movies
+  		where id = #{id}
+  	</select>
+  	<select id="getTotal" parameterType="java.lang.String" resultType="int">
+  		select count(*)
+  		from Movies
+  		<where>
+  			<if test="'country'==arg1">
+  				country like #{arg0}
+  			</if>
+  			<if test="'genre'==arg1">
+  				genre like #{arg0}
+  			</if>
+  			<if test="'name'==arg1">
+  				name like #{arg0}
+  			</if>
+  			<if test="'author'==arg1">
+  				author like #{arg0}
+  			</if>
+  		</where>
+  	</select>
+  	<select id="viewNum" parameterType="int" resultType="int">
+  		select view
+  		from Views
+  		where id = #{id}
+  	</select>
+  	<update id="viewUp" parameterType="int">
+  		update Views
+  		set view = view+1
+  		where id = #{id}
+  	</update>
+  </mapper>

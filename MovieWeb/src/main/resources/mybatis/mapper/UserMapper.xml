@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzh.ssm.dao.UserMapper">
+	<update id="changeMsg" parameterType="User" >
+		update Users 
+		set gender=#{gender},birthday=#{birthday},avator=#{avator}
+		where id = #{id}
+	</update>
+	<insert id="createAcc" parameterType="User">
+		insert into Users(id,psw,gender,email,birthday,avator) 
+		values (#{id},#{psw},#{gender},#{email},#{birthday},#{avator})
+	</insert>
+	<select id="existAcc" parameterType="java.lang.String" resultType="boolean">
+		<![CDATA[ select count(*) 
+        from Users 
+        where id = #{id}]]>
+	</select>
+	<select id="checkin" parameterType="java.lang.String" resultType="boolean">
+		<![CDATA[select count(*)
+		from Users 
+		where id = #{arg0} and psw = #{arg1}]]>
+	</select>
+	<select id="userMsg" parameterType="java.lang.String" resultType="User">
+		select *
+		from Users
+		where id = #{id}
+	</select>
+</mapper>

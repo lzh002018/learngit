@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzh.ssm.dao.CommentMapper">
+	<resultMap type="Comment" id="GetMovieAndUser">
+		<id property="id" column="id"/>	
+		<result property="content" column="content"/>
+		<result property="time" column="time"/>
+		<association property="user" javaType="User">
+			<id property="id" column="uid"/>
+			<result property="avator" column="uavator"/>
+		</association>
+		<association property="movie" javaType="Movie">
+			<result property="name" column="mname"/>
+		</association>
+	</resultMap>
+	<select id="findByMovieId" parameterType="int" resultMap="GetMovieAndUser">
+		select Comments.*,Movies.name as mname,Users.id as uid,Users.avator as uavator
+		from Comments inner join Movies inner join Users
+		on Comments.movieId = Movies.id and Comments.userId = Users.id
+		where movieId = #{movieId}
+	</select>
+	<insert id="makeComment" useGeneratedKeys="true"
+	keyColumn="id">
+		insert into 
+		Comments(id,movieId,userId,content,time,avator)
+		values(null,#{arg1.id},#{arg0.id},#{arg2},#{arg3},#{arg0.avator})
+	</insert>
+</mapper>
